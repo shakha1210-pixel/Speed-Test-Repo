@@ -3,7 +3,7 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Замер скорости скачивания</title>
+<title>Speed Test — измерение скорости загрузки</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@500;700&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans:wght@400;500&display=swap" rel="stylesheet">
@@ -92,45 +92,45 @@ code{font:13px var(--mono);background:rgba(255,255,255,.05);border:1px solid var
 
 <main>
   <section class="hero">
-    <h1>Скорость сети, в реальном времени</h1>
-    <p>Десять запросов по очереди. Каждый ответ скачивается целиком, время считается до последнего байта. Сцена реагирует на скорость.</p>
+    <h1>Измерьте скорость загрузки</h1>
+    <p>Последовательные запросы к выбранному адресу. Каждый ответ загружается полностью — время фиксируется до последнего байта. 3D-сцена реагирует на скорость соединения.</p>
   </section>
 
   <section class="glass panel">
     <form id="form">
-      <label id="urlField">Адрес файла
+      <label id="urlField">URL файла для проверки
         <input id="url" type="url" required value="https://upload.wikimedia.org/wikipedia/commons/3/3f/Fronalpstock_big.jpg">
       </label>
-      <label>Запросов
+      <label>Количество запросов
         <input id="count" type="number" min="1" max="50" value="10" required>
       </label>
       <div class="btns">
-        <button id="start" type="submit">Запустить</button>
-        <button id="stop" type="button" class="ghost" disabled>Стоп</button>
+        <button id="start" type="submit">Начать измерение</button>
+        <button id="stop" type="button" class="ghost" disabled>Остановить</button>
       </div>
     </form>
-    <div class="presets" id="presets">Примеры:
-      <button type="button" class="chip" data-url="https://upload.wikimedia.org/wikipedia/commons/3/3f/Fronalpstock_big.jpg">Фото · Wikimedia</button>
-      <button type="button" class="chip" data-url="https://speed.cloudflare.com/__down?bytes=10000000">10 МБ · Cloudflare</button>
+    <div class="presets" id="presets"><span>Примеры адресов:</span>
+      <button type="button" class="chip" data-url="https://upload.wikimedia.org/wikipedia/commons/3/3f/Fronalpstock_big.jpg">Изображение · Wikimedia</button>
+      <button type="button" class="chip" data-url="https://speed.cloudflare.com/__down?bytes=10000000">Файл 10 МБ · Cloudflare</button>
     </div>
   </section>
 
   <div class="stage">
-    <ol class="lanes" id="lanes" aria-label="Запросы"></ol>
+    <ol class="lanes" id="lanes" aria-label="Ход выполнения запросов"></ol>
     <aside class="glass result" aria-live="polite">
-      <h2>СКОРОСТЬ СКАЧИВАНИЯ</h2>
+      <h2>ТЕКУЩАЯ СКОРОСТЬ ЗАГРУЗКИ</h2>
       <p class="speed" id="speed">—</p>
       <p class="unit">Мбит/с <span id="mbyte"></span></p>
       <dl>
-        <div><dt>Среднее время</dt><dd id="avg">—</dd></div>
-        <div><dt>Скачано всего</dt><dd id="total">—</dd></div>
-        <div><dt>Успешных запросов</dt><dd id="ok">—</dd></div>
+        <div><dt>Среднее время ответа</dt><dd id="avg">—</dd></div>
+        <div><dt>Загружено данных</dt><dd id="total">—</dd></div>
+        <div><dt>Успешно выполнено</dt><dd id="ok">—</dd></div>
       </dl>
       <p class="note" id="note" role="alert"></p>
     </aside>
   </div>
 
-  <footer>То же самое в консоли: <code>python speedtest.py &lt;URL&gt;</code>. Скорость = весь объём ÷ всё время запросов, 1 МБ = 1 000 000 байт.</footer>
+  <footer>Консольная версия: <code>python speedtest.py &lt;URL&gt;</code>. Скорость = общий объём данных ÷ суммарное время загрузки. 1 МБ = 1 000 000 байт.</footer>
 </main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
