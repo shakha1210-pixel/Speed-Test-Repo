@@ -284,11 +284,12 @@ def _print_summary(requested: int, results: list[RequestResult]) -> None:
 def validate_url(url: str) -> str | None:
     """Возвращает сообщение об ошибке, если адрес недопустим, иначе `None`."""
     try:
+        if any(char.isspace() for char in url):
+            return "адрес URL не должен содержать пробелы или управляющие символы"
         parsed = urlparse(url)
         # hostname и port дополнительно проверяют пустой хост и некорректный порт.
         if (parsed.scheme not in ("http", "https")
-                or not parsed.netloc or not parsed.hostname
-                or any(char.isspace() for char in parsed.hostname)):
+                or not parsed.netloc or not parsed.hostname):
             return "нужен полный адрес, начинающийся с http:// или https://"
         parsed.port
     except ValueError:
