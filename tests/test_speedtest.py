@@ -43,6 +43,7 @@ def test_validate_url_rejects_malformed_authority():
     assert speedtest.validate_url("http://[") is not None
     assert speedtest.validate_url("http://:8080/file") is not None
     assert speedtest.validate_url("https://example.com:invalid/file") is not None
+    assert speedtest.validate_url("http://example.com/path with spaces") is not None
 
 
 def test_parse_args_defaults():
@@ -88,4 +89,11 @@ def test_main_rejects_invalid_url(capsys):
 
 def test_main_rejects_bad_count(capsys):
     assert speedtest.main(["https://example.com/x", "-n", "0"]) == 2
+    assert "Ошибка" in capsys.readouterr().err
+
+
+def test_main_rejects_non_finite_timeout(capsys):
+    assert speedtest.main(["https://example.com/x", "-t", "nan"]) == 2
+    assert "Ошибка" in capsys.readouterr().err
+    assert speedtest.main(["https://example.com/x", "-t", "inf"]) == 2
     assert "Ошибка" in capsys.readouterr().err
