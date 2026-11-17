@@ -39,6 +39,12 @@ def test_validate_url_rejects_other_schemes():
     assert speedtest.validate_url("file:///C:/secret.txt") is not None
 
 
+def test_validate_url_rejects_malformed_authority():
+    assert speedtest.validate_url("http://[") is not None
+    assert speedtest.validate_url("http://:8080/file") is not None
+    assert speedtest.validate_url("https://example.com:invalid/file") is not None
+
+
 def test_parse_args_defaults():
     args = speedtest.parse_args(["https://example.com/a.jpg"])
     assert args.url == "https://example.com/a.jpg"
