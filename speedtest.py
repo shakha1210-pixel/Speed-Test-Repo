@@ -282,9 +282,15 @@ def _print_summary(requested: int, results: list[RequestResult]) -> None:
 
 def validate_url(url: str) -> str | None:
     """Возвращает сообщение об ошибке, если адрес недопустим, иначе `None`."""
-    parsed = urlparse(url)
-    if parsed.scheme not in ("http", "https") or not parsed.netloc:
-        return "нужен полный адрес, начинающийся с http:// или https://"
+    try:
+        parsed = urlparse(url)
+        # hostname и port дополнительно проверяют пустой хост и некорректный порт.
+        if (parsed.scheme not in ("http", "https")
+                or not parsed.netloc or not parsed.hostname):
+            return "нужен полный адрес, начинающийся с http:// или https://"
+        parsed.port
+    except ValueError:
+        return "некорректный адрес URL"
     return None
 
 
