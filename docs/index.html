@@ -343,6 +343,17 @@ els.form.addEventListener("submit", async (event) => {
   event.preventDefault();
   const url = els.url.value.trim();
   const count = Math.max(1, Math.min(50, parseInt(els.count.value, 10) || 10));
+  let parsedUrl;
+  try {
+    parsedUrl = new URL(url);
+  } catch (_) {
+    els.note.textContent = "Укажите корректный полный URL.";
+    return;
+  }
+  if (!["http:", "https:"].includes(parsedUrl.protocol) || !parsedUrl.hostname) {
+    els.note.textContent = "Поддерживаются только адреса HTTP и HTTPS.";
+    return;
+  }
 
   els.note.textContent = "";
   ["speed", "avg", "total", "ok"].forEach((k) => (els[k].textContent = "—"));
