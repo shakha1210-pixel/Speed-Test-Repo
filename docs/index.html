@@ -350,7 +350,7 @@ els.form.addEventListener("submit", async (event) => {
 
   const lanes = buildLanes(count);
   const results = [];
-  let best = 0, firstError = "";
+  let best = 0, firstError = "", stopped = false;
   controller = new AbortController();
   els.start.disabled = true; els.stop.disabled = false;
 
@@ -364,13 +364,14 @@ els.form.addEventListener("submit", async (event) => {
       best = Math.max(best, paintLane(lane, r.bytes, r.seconds, best));
       showSummary(results, count);
     } catch (error) {
-      if (error.name === "AbortError") { els.note.textContent = explain(error); break; }
+      if (error.name === "AbortError") { stopped = true; break; }
       lane.li.classList.add("fail");
       lane.sz.textContent = "ошибка";
       firstError = firstError || explain(error);
     }
   }
-  if (firstError) els.note.textContent = firstError;
+  if (stopped) els.note.textContent = explain({ name: "AbortError" });
+  else if (firstError) els.note.textContent = firstError;
   controller = null;
   els.start.disabled = false; els.stop.disabled = true;
 });
