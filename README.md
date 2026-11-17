@@ -1,122 +1,122 @@
 # Speed Test CLI
 
-A lightweight Python command-line tool for measuring HTTP download throughput from a target URL. It performs sequential requests, reads each response body completely, and reports transfer size, request timing, and aggregate download speed.
+**Speed Test CLI** — консольная утилита на Python для измерения скорости скачивания по заданному URL. Скрипт последовательно выполняет HTTP(S)-запросы, полностью считывает тело каждого ответа и рассчитывает среднюю скорость передачи данных.
 
-[![Python 3.9+](https://img.shields.io/badge/python-3.9%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
-[![Dependencies](https://img.shields.io/badge/runtime%20dependencies-none-16A34A)](#)
-[![License: MIT](https://img.shields.io/badge/license-MIT-8B5CF6)](LICENSE)
+[![Python 3.9+](https://img.shields.io/badge/Python-3.9%2B-3776AB?logo=python&logoColor=white)](https://www.python.org/)
+[![Без зависимостей](https://img.shields.io/badge/Зависимости-не%20требуются-16A34A)](#)
+[![Лицензия MIT](https://img.shields.io/badge/Лицензия-MIT-8B5CF6)](LICENSE)
 
-> This tool measures download performance to a **specific HTTP(S) endpoint**. It is not a universal measurement of your internet connection.
+> Утилита измеряет скорость загрузки с **конкретного HTTP(S)-адреса**. Результат не является универсальной оценкой скорости интернет-соединения.
 
-## Features
+## Возможности
 
-- **Sequential measurements** — runs one request at a time; no concurrent downloads.
-- **Complete response reads** — consumes each response body in 64 KiB chunks before recording the result.
-- **Useful metrics** — reports successful request count, total bytes, average/minimum/maximum request time, standard deviation, and aggregate throughput.
-- **Live terminal progress** — displays per-request progress and a relative speed bar in interactive terminals.
-- **Machine-readable output** — `--json` emits a structured summary for scripts and automation.
-- **Configurable runs** — choose the request count and network timeout.
-- **No runtime dependencies** — built entirely on the Python standard library.
+- **Последовательные запросы** — следующий запрос начинается только после полного завершения предыдущего.
+- **Полное чтение ответа** — данные считываются блоками по 64 КиБ до конца потока.
+- **Подробная статистика** — количество успешных запросов, общий объём данных, среднее, минимальное и максимальное время, стандартное отклонение и итоговая скорость.
+- **Индикатор прогресса** — отображает ход скачивания и текущую скорость в интерактивном терминале.
+- **JSON-формат** — параметр `--json` позволяет использовать результаты в других скриптах и автоматизации.
+- **Настраиваемый запуск** — можно задать количество запросов и сетевой таймаут.
+- **Без сторонних runtime-зависимостей** — используется стандартная библиотека Python.
 
-## Requirements
+## Требования
 
-- Python **3.9 or newer**
-- An internet connection
-- A reachable HTTP or HTTPS URL
+- Python **3.9 или новее**.
+- Подключение к интернету.
+- Доступный адрес с протоколом HTTP или HTTPS.
 
-## Quick start
+## Быстрый запуск
 
-Clone the repository:
+Клонируйте репозиторий:
 
 ```bash
 git clone https://github.com/shakha1210-pixel/Speed-Test-Repo.git
 cd Speed-Test-Repo
 ```
 
-Run the script:
+Запустите измерение:
 
 ```bash
 python speedtest.py https://upload.wikimedia.org/wikipedia/commons/3/3f/Fronalpstock_big.jpg
 ```
 
-On some macOS and Linux installations, use `python3` instead of `python`.
+В некоторых системах macOS и Linux вместо `python` необходимо использовать `python3`.
 
-### Install as a command (optional)
+### Установка как консольной команды
 
-The project includes packaging metadata, so it can also be installed locally:
+При желании утилиту можно установить локально:
 
 ```bash
 python -m pip install .
 speedtest https://example.com/large-file.bin
 ```
 
-## Usage
+## Использование
 
 ```text
-python speedtest.py URL [options]
+python speedtest.py URL [параметры]
 ```
 
-| Option | Description | Default |
+| Параметр | Описание | По умолчанию |
 |---|---|---:|
-| `URL` | Target HTTP(S) resource | Required |
-| `-n`, `--count` | Number of sequential requests | `10` |
-| `-t`, `--timeout` | Network operation timeout, in seconds | `30` |
-| `--json` | Print the final summary as JSON | Off |
-| `--version` | Print the application version | — |
-| `-h`, `--help` | Show help | — |
+| `URL` | Адрес HTTP(S)-ресурса для скачивания | Обязательный |
+| `-n`, `--count` | Количество последовательных запросов | `10` |
+| `-t`, `--timeout` | Таймаут сетевой операции, в секундах | `30` |
+| `--json` | Вывести итоговую сводку в формате JSON | Выключен |
+| `--version` | Показать версию программы | — |
+| `-h`, `--help` | Показать справку | — |
 
-Examples:
+Примеры:
 
 ```bash
-# Run the default 10 measurements
+# Стандартный запуск: 10 запросов
 python speedtest.py https://example.com/large-file.bin
 
-# Run 5 sequential requests with a 15-second timeout
+# 5 запросов с таймаутом 15 секунд
 python speedtest.py https://example.com/large-file.bin --count 5 --timeout 15
 
-# Produce JSON output
+# Вывод результата в формате JSON
 python speedtest.py https://example.com/large-file.bin --json
 
-# Show the installed script version
+# Проверка версии
 python speedtest.py --version
 ```
 
-The timeout is applied to blocking network operations by Python's URL opener; it is not a strict overall deadline for the entire download.
+Таймаут применяется к блокирующим сетевым операциям. Это не строгий общий лимит времени на выполнение всей загрузки.
 
-## Example output
+## Пример вывода
 
-The following is an illustrative example. Actual values depend on the target server and network conditions.
+Ниже приведён условный пример. Фактические значения зависят от сервера и состояния сети.
 
 ```text
-  ⚡ SPEEDTEST  download speed measurement
+  ⚡ SPEEDTEST  замер скорости скачивания
   ──────────────────────────────────────────────────────────
-  URL       https://example.com/large-file.bin
-  Requests  10  (sequential)
+  Адрес     https://example.com/large-file.bin
+  Запросов  10  (последовательно)
 
-  [ 1/10] ✓     3.41 MB       412 ms     66.2 Mbps  ████████████████████░░░░
-  [ 2/10] ✓     3.41 MB       368 ms     74.1 Mbps  ████████████████████████
+  [ 1/10] ✓     3.41 МБ       412 мс     66.2 Мбит/с  ████████████████████░░░░
+  [ 2/10] ✓     3.41 МБ       368 мс     74.1 Мбит/с  ████████████████████████
   ...
 
   ──────────────────────────────────────────────────────────
-  RESULT
+  РЕЗУЛЬТАТ
 
-  Successful requests    10 of 10
-  Total downloaded      34.10 MB
-  Average request time    391 ms
-  Download throughput   69.80 Mbps   ≈ 8.73 MB/s
+  Успешных запросов     10 из 10
+  Скачано всего         34.10 МБ
+  Среднее время         391 мс
+  Скорость скачивания   69.80 Мбит/с   ≈ 8.73 МБ/с
 ```
 
-Colors are enabled in interactive terminals. They are automatically disabled when standard output is redirected or the `NO_COLOR` environment variable is set.
+Цветное оформление включается в интерактивном терминале. Оно автоматически отключается при перенаправлении вывода или наличии переменной окружения `NO_COLOR`.
 
-## JSON output
+## Вывод в формате JSON
 
-Use `--json` to print the final summary without the interactive terminal display. Each request is represented in the `results` array.
+Параметр `--json` отключает интерактивный вывод и печатает итоговую сводку. Информация об отдельных запросах находится в массиве `results`.
 
 ```bash
 python speedtest.py https://example.com/large-file.bin --json
 ```
 
-Example shape (values shortened for readability):
+Пример структуры ответа:
 
 ```json
 {
@@ -143,107 +143,111 @@ Example shape (values shortened for readability):
 }
 ```
 
-A failed request has `"status": "error"` and includes an `error` message. Failed requests are excluded from the aggregate timing and throughput calculations.
+Для неудачного запроса поле `status` содержит значение `"error"`, а объект дополнительно включает текст ошибки в поле `error`. Неуспешные запросы не участвуют в расчёте итоговой скорости и среднего времени.
 
-## Measurement methodology
+## Как выполняется измерение
 
-The script uses `time.perf_counter()`, a high-resolution monotonic timer, and `urllib.request` from the Python standard library.
+Для запросов используется `urllib.request`, а для измерения времени — `time.perf_counter()`, монотонный таймер высокой точности.
 
-1. Start the timer immediately before opening the URL.
-2. Send one HTTP(S) request.
-3. Read the response body in chunks of up to **64 KiB** until the stream ends.
-4. Stop the timer after the complete response body has been read.
-5. Finish that request before starting the next one.
+Последовательность измерения:
 
-The measured duration includes connection setup, waiting for the response, and downloading the response body.
+1. Запускается таймер непосредственно перед открытием URL.
+2. Отправляется HTTP(S)-запрос.
+3. Тело ответа полностью считывается блоками размером до **64 КиБ**.
+4. После получения последнего байта таймер останавливается.
+5. Только после этого начинается следующий запрос.
 
-### Metrics and formulas
+В измеренное время входят установка соединения, ожидание ответа сервера и скачивание тела ответа.
 
-| Metric | Calculation |
+### Метрики и формулы
+
+| Метрика | Расчёт |
 |---|---|
-| Average request time | Sum of successful request durations ÷ number of successful requests |
-| Total downloaded | Sum of bytes actually read from successful response bodies |
-| Aggregate throughput | Total downloaded bytes × 8 ÷ total successful-request time ÷ 1,000,000 |
-| MB/s | Total downloaded bytes ÷ total successful-request time ÷ 1,000,000 |
+| Среднее время запроса | Сумма длительности успешных запросов ÷ количество успешных запросов |
+| Общий объём | Сумма фактически считанных байтов успешных ответов |
+| Итоговая скорость | Общий объём в байтах × 8 ÷ суммарное время в секундах ÷ 1 000 000 |
+| Скорость в МБ/с | Общий объём в байтах ÷ суммарное время в секундах ÷ 1 000 000 |
 
-- **Mbps** means megabits per second.
-- **MB/s** means megabytes per second.
-- File sizes use decimal units: **1 MB = 1,000,000 bytes**.
-- Request durations are displayed in milliseconds.
+Единицы измерения:
 
-Aggregate throughput is calculated from the combined successful transfer volume and time. It is **not** the arithmetic mean of individual request speeds.
+- **Мбит/с** — мегабиты в секунду.
+- **МБ/с** — мегабайты в секунду.
+- Размеры используют десятичную систему: **1 МБ = 1 000 000 байт**.
+- Время отображается в миллисекундах.
 
-## Error handling and exit codes
+Итоговая скорость рассчитывается по совокупному объёму успешно скачанных данных и суммарному времени этих загрузок. Это **не** среднее арифметическое скоростей отдельных запросов.
 
-A failed request is recorded as an error, and the script continues with the remaining requests. Only successful requests contribute to the final aggregate metrics.
+## Обработка ошибок и коды завершения
 
-| Exit code | Meaning |
+Если запрос завершается ошибкой, утилита фиксирует её и переходит к следующему запросу. В итоговую статистику включаются только успешные загрузки.
+
+| Код | Значение |
 |---:|---|
-| `0` | Every requested measurement succeeded |
-| `1` | At least one request failed |
-| `2` | Invalid input, URL, request count, or timeout |
-| `130` | Interrupted by the user with `Ctrl+C` |
+| `0` | Все запрошенные измерения выполнены успешно |
+| `1` | Как минимум один запрос завершился ошибкой |
+| `2` | Некорректный URL, количество запросов или значение таймаута |
+| `130` | Выполнение прервано пользователем через `Ctrl+C` |
 
-If every request fails, the script reports that no measurement could be calculated.
+Если не удалось выполнить ни одного запроса, утилита сообщит, что рассчитать результат невозможно.
 
-## Browser version
+## Браузерная версия
 
-A browser-based version is available in [`docs/index.html`](docs/index.html). It provides a visual interface with sequential download measurements and a Three.js scene that reacts to measured speed.
+В каталоге [`docs/index.html`](docs/index.html) находится браузерная версия проекта с визуальным интерфейсом и 3D-сценой на Three.js. Сцена реагирует на измеряемую скорость загрузки.
 
-To publish it with GitHub Pages:
+### Публикация через GitHub Pages
 
-1. Open the repository's **Settings → Pages**.
-2. Under **Build and deployment**, select **Deploy from a branch**.
-3. Choose branch `main` and folder `/docs`.
-4. Save the settings.
+1. Откройте **Settings → Pages** в настройках репозитория.
+2. В разделе **Build and deployment** выберите **Deploy from a branch**.
+3. Укажите ветку `main` и каталог `/docs`.
+4. Сохраните настройки.
 
-### Browser limitations
+### Ограничения браузерной версии
 
-Browsers enforce cross-origin restrictions. The target server must allow requests from the page's origin through its CORS response headers; otherwise, the browser may block access to the response. The command-line version is not subject to browser CORS restrictions.
+Браузеры ограничивают междоменные запросы политикой CORS. Сервер, с которого выполняется скачивание, должен разрешать запросы с источника опубликованной страницы. В противном случае браузер может заблокировать доступ к ответу.
 
-The browser version measures downloads only. It does not upload local files.
+Консольная версия не зависит от браузерной политики CORS. Браузерная версия предназначена для измерения скачивания и не загружает файлы пользователя на сервер.
 
-## Project structure
+## Структура проекта
 
 ```text
 .
 ├── docs/
-│   └── index.html          # Browser-based visual speed test
+│   └── index.html          # Браузерная версия с визуализацией
 ├── tests/
-│   ├── conftest.py         # Local test server and shared fixtures
-│   └── test_speedtest.py   # Unit and integration tests
-├── speedtest.py            # CLI implementation
-├── pyproject.toml           # Package metadata and tool configuration
-├── requirements-dev.txt     # Development-only dependencies
-├── LICENSE                  # MIT license
+│   ├── conftest.py         # Локальный HTTP-сервер и фикстуры
+│   └── test_speedtest.py   # Модульные и интеграционные тесты
+├── speedtest.py            # Основная реализация CLI
+├── pyproject.toml          # Метаданные пакета и настройки инструментов
+├── requirements-dev.txt    # Зависимости для разработки и тестирования
+├── LICENSE                 # Лицензия MIT
 └── README.md
 ```
 
-## Development
+## Разработка и тестирование
 
-Install the development tools:
+Установите инструменты разработки:
 
 ```bash
 python -m pip install -r requirements-dev.txt
 ```
 
-Run the linter and test suite:
+Запустите проверку стиля и тесты:
 
 ```bash
 ruff check .
 pytest
 ```
 
-The runtime application itself does not require `pytest` or `ruff`.
+Для обычного запуска приложения `pytest` и `ruff` не требуются.
 
-## Limitations
+## Ограничения измерения
 
-- Results describe the route to the selected server, not an abstract or universal "internet speed".
-- CDN routing, server load, caching, geographic distance, and network conditions can affect measurements.
-- Requests are sequential and use a single connection per request; this does not benchmark maximum throughput achievable with parallel connections.
-- The script measures bytes delivered in the HTTP response body. It does not use the `Content-Length` header as the downloaded-byte count.
-- Failed or interrupted transfers do not contribute partial bytes to the final aggregate.
+- Результат характеризует соединение с выбранным сервером, а не абстрактную «скорость интернета».
+- На показатели влияют маршрутизация, нагрузка сервера, CDN, расстояние до сервера и состояние сети.
+- Запросы выполняются последовательно. Такой тест не измеряет максимальную пропускную способность, достижимую при параллельных загрузках.
+- Учитываются байты, фактически прочитанные из тела HTTP-ответа, а не значение заголовка `Content-Length`.
+- Неуспешные и прерванные загрузки не включаются в итоговую статистику.
 
-## License
+## Лицензия
 
-This project is licensed under the [MIT License](LICENSE).
+Проект распространяется на условиях лицензии [MIT](LICENSE).
