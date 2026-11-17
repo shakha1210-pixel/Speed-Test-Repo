@@ -12,6 +12,7 @@ from __future__ import annotations
 
 import argparse
 import json
+import math
 import os
 import statistics
 import sys
@@ -286,7 +287,8 @@ def validate_url(url: str) -> str | None:
         parsed = urlparse(url)
         # hostname и port дополнительно проверяют пустой хост и некорректный порт.
         if (parsed.scheme not in ("http", "https")
-                or not parsed.netloc or not parsed.hostname):
+                or not parsed.netloc or not parsed.hostname
+                or any(char.isspace() for char in parsed.hostname)):
             return "нужен полный адрес, начинающийся с http:// или https://"
         parsed.port
     except ValueError:
@@ -323,8 +325,8 @@ def main(argv: list[str] | None = None) -> int:
     if args.count < 1:
         _fail("количество запросов должно быть не меньше 1")
         return 2
-    if args.timeout <= 0:
-        _fail("таймаут должен быть больше 0")
+    if not math.isfinite(args.timeout) or args.timeout <= 0:
+        _fail("таймаут должен быть конечным числом больше 0")
         return 2
 
     pretty = not args.as_json
